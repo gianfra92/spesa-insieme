@@ -7,13 +7,13 @@
 
     <div class="flex flex-wrap gap-2">
       <button
-        *ngFor="let name of userService.allUsers$ | async"
-        (click)="select(name)"
+        *ngFor="let user of userService.allUsers$ | async"
+        (click)="select(user)"
         class="px-3 py-1 rounded-full text-sm border border-gray-300"
-        [class.bg-blue-500]="(userService.current$ | async) === name"
-        [class.text-white]="(userService.current$ | async) === name"
+        [class.bg-blue-500]="(userService.current$ | async)?._id === user._id"
+        [class.text-white]="(userService.current$ | async)?._id === user._id"
       >
-        {{ name }}
+        {{ user.name }}
       </button>
     </div>
   </div>

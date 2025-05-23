@@ -25,14 +25,14 @@ export class HomeComponent {
   }
 
   selectItem(item: Item) {
-    const username = this.userService.getCurrent();
-    if (!username || !item.selection || item.selection < 1) return;
+    const user = this.userService.getCurrent();
+    if (!user || !item.selection || item.selection < 1) return;
 
-    const existing = item.selectedBy.find(s => s.user === username);
+    const existing = item.selectedBy.find(s => s.user === user._id);
     if (existing) {
       existing.quantity = item.selection;
     } else {
-      item.selectedBy.push(new SelectedItem(username, item.selection));
+      item.selectedBy.push(new SelectedItem(user._id, item.selection));
     }
 
     item.selection = 0;

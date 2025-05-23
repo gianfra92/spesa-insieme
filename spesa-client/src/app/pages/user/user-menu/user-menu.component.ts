@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../../../services/user-service.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { User } from '../../../models';
 
 @Component({
   selector: 'app-user-menu',
@@ -18,7 +19,7 @@ export class UserMenuComponent {
     this.newUser = '';
   }
 
-  select(name: string) {
-    this.userService.selectUser(name);
+  select(user: User) {
+    this.userService.selectUser(user);
   }
 }
