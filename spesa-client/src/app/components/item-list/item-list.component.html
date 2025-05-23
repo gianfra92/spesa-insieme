@@ -1,15 +1,19 @@
-<div class="space-y-2">
-  <div *ngFor="let item of items" class="p-2 bg-white shadow rounded">
-    <div class="flex justify-between items-center">
-      <div>
-        <strong>{{ item.name }}</strong> ({{ item.quantity }})
+<div *ngFor="let item of items">
+  <ng-container *ngIf="item.name && item.quantity > 0">
+    <div class="p-2 bg-white shadow rounded">
+      <div class="flex justify-between items-center">
+        <div>
+          <strong>{{ item.name }} ({{item.quantity}})</strong>
+        </div>
+        <input type="number" [(ngModel)]="item.selection" min="1" class="w-16 border p-1" />
+        <button (click)="onSelect(item)" class="bg-green-600 text-white px-3 py-1 rounded">Prendi</button>
       </div>
-      <input type="number" [(ngModel)]="item.selection" min="1" class="w-16 border p-1" />
-      <button (click)="onSelect(item)" class="bg-green-600 text-white px-3 py-1 rounded">Prendi</button>
+      <div class="text-xs text-gray-600 mt-1" *ngIf="item.selectedBy.length">
+        Scelto da:
+        <span *ngFor="let s of item.selectedBy">
+          {{ s.user?.name || 'Utente sconosciuto' }} ({{ s.quantity }})
+        </span>
+      </div>
     </div>
-    <div class="text-xs text-gray-600 mt-1" *ngIf="item.selectedBy.length">
-      Scelto da:
-      <span *ngFor="let s of item.selectedBy">{{ s.user.name }} ({{ s.quantity }}) </span>
-    </div>
-  </div>
+  </ng-container>
 </div>

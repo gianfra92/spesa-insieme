@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ShoppingItem, ShoppingItemDocument } from './shopping-item.schema';
 
 @Injectable()
@@ -11,7 +11,10 @@ export class ShoppingListService {
   ) {}
 
   async getAll() {
-    return this.shoppingItemModel.find().exec();
+    return this.shoppingItemModel
+      .find()
+      .populate('selectedBy.user', 'name')
+      .exec();
   }
 
   async addItem(name: string, quantity: number) {
@@ -23,15 +26,23 @@ export class ShoppingListService {
     return this.shoppingItemModel.findByIdAndDelete(id).exec();
   }
 
-  async updateSelection(id: string, userId: string, quantity: number) {
-    const item = await this.shoppingItemModel.findById(id).exec();
+  async updateSelection(itemId: string, userId: string, quantity: number) {
+    const item = await this.shoppingItemModel
+      .findById(itemId)
+      .populate('selectedBy.user')
+      .exec();
     if (!item) throw new NotFoundException('Item not found');
 
-    const existing = item.selectedBy.find((s) => s.userId === userId);
+    const userObjectId = new Types.ObjectId(userId);
+
+    console.log('Item', item);
+
+    const existing = item.selectedBy.find((s) => s.user.equals(userObjectId));
+
     if (existing) {
       existing.quantity = quantity;
     } else {
-      item.selectedBy.push({ userId, quantity });
+      item.selectedBy.push({ user: userObjectId, quantity });
     }
 
     return item.save();

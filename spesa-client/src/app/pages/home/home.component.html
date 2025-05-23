@@ -5,7 +5,10 @@
     <ng-template #noUser><em>nessuno</em></ng-template>
   </div>
 
-  <app-item-form (add)="addItem($event)"></app-item-form>
-  <app-item-list (select)="selectItem($event)" [items]="(shoppingService.allItems$ | async) ?? []"></app-item-list>
+  <ng-container *ngIf="userService.current$ | async as user; else noList">
+    <app-item-form (add)="addItem($event)"></app-item-form>
+    <app-item-list (select)="selectItem($event)" [items]="(shoppingService.allItems$ | async) ?? []"></app-item-list>
+  </ng-container>
+  <ng-template #noList><h3 class="font-bold text-lg mb-2">Seleziona un utente per iniziare</h3></ng-template>
   <app-summary [items]="(shoppingService.allItems$ | async) ?? []"></app-summary>
 </div>

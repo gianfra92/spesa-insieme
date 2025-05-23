@@ -3,11 +3,17 @@ import { Document, Types } from 'mongoose';
 
 export type ShoppingItemDocument = ShoppingItem & Document;
 
+@Schema({ _id: false })
+export class SelectedByUser {
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: Types.ObjectId;
+
+  @Prop({ required: true })
+  quantity: number;
+}
+
 @Schema({ timestamps: true })
 export class ShoppingItem {
-  @Prop()
-  _id?: Types.ObjectId;
-
   @Prop({ required: true })
   name: string;
 
@@ -15,10 +21,10 @@ export class ShoppingItem {
   quantity: number;
 
   @Prop({
-    type: [{ userId: String, quantity: Number }],
+    type: [SelectedByUser],
     default: [],
   })
-  selectedBy: { userId: string; quantity: number }[];
+  selectedBy: SelectedByUser[] = [];
 }
 
 export const ShoppingItemSchema = SchemaFactory.createForClass(ShoppingItem);

@@ -14,7 +14,7 @@
 
   <h3 class="font-bold text-lg mt-4 mb-2">Totale per oggetto</h3>
   <ul class="list-disc list-inside">
-    <li *ngFor="let t of getTotalByItem() | keyvalue">
+    <li *ngFor="let t of getTotalByItem()">
       {{ t.key }}: {{ t.value }}
     </li>
   </ul>

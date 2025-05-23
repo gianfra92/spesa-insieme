@@ -10,18 +10,19 @@ import {
 import { ShoppingListService } from './shopping-list.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { SelectItemDto } from './dto/select-item.dto';
+import { ShoppingItem } from './shopping-item.schema';
 
 @Controller('items')
 export class ShoppingListController {
   constructor(private readonly service: ShoppingListService) {}
 
   @Get()
-  getAll() {
+  getAll(): Promise<ShoppingItem[]> {
     return this.service.getAll();
   }
 
   @Post()
-  addItem(@Body() dto: CreateItemDto) {
+  addItem(@Body() dto: CreateItemDto): Promise<ShoppingItem> {
     return this.service.addItem(dto.name, dto.quantity);
   }
 

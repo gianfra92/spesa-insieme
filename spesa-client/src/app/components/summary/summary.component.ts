@@ -17,6 +17,7 @@ export class SummaryComponent {
 
     for (const item of this.items) {
       for (const sel of item.selectedBy) {
+        if (!sel.user || !sel.user.name) continue; 
         if (!summaryMap[sel.user.name]) {
           summaryMap[sel.user.name] = {};
         }
@@ -31,13 +32,16 @@ export class SummaryComponent {
     }));
   }
 
-  getTotalByItem(): { [itemName: string]: number } {
+  getTotalByItem(): { key: string; value: number }[] {
     const total: { [itemName: string]: number } = {};
     this.items.forEach(item => {
       const sum = item.selectedBy.reduce((acc, s) => acc + s.quantity, 0);
       total[item.name] = sum;
     });
-    return total;
+    return Object.entries(total)
+      .map(([key, value]) => ({ key, value }))
+      .filter(item => item.value >0 )
+      .sort((a, b) => a.key.localeCompare(b.key));
   }
 
 }

@@ -18,7 +18,7 @@ export class ItemFormComponent {
     const name = this.newItemName.trim();
     if (!name) return;
 
-    const item = new Item(name, this.newItemQuantity);
+    const item = new Item('', name, this.newItemQuantity);
     this.add.emit(item);
 
     this.newItemName = '';
