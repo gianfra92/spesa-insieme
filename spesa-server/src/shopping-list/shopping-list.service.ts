@@ -23,15 +23,15 @@ export class ShoppingListService {
     return this.shoppingItemModel.findByIdAndDelete(id).exec();
   }
 
-  async updateSelection(id: string, user: string, quantity: number) {
+  async updateSelection(id: string, userId: string, quantity: number) {
     const item = await this.shoppingItemModel.findById(id).exec();
     if (!item) throw new NotFoundException('Item not found');
 
-    const existing = item.selectedBy.find((s) => s.user === user);
+    const existing = item.selectedBy.find((s) => s.userId === userId);
     if (existing) {
       existing.quantity = quantity;
     } else {
-      item.selectedBy.push({ user, quantity });
+      item.selectedBy.push({ userId, quantity });
     }
 
     return item.save();

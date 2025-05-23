@@ -27,7 +27,7 @@ export class ShoppingListController {
 
   @Put(':id/select')
   updateSelection(@Param('id') id: string, @Body() dto: SelectItemDto) {
-    return this.service.updateSelection(id, dto.user, dto.quantity);
+    return this.service.updateSelection(id, dto.userId, dto.quantity);
   }
 
   @Delete(':id')

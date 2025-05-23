@@ -1,10 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type ShoppingItemDocument = ShoppingItem & Document;
 
 @Schema({ timestamps: true })
 export class ShoppingItem {
+  @Prop()
+  _id?: Types.ObjectId;
+
   @Prop({ required: true })
   name: string;
 
@@ -12,10 +15,10 @@ export class ShoppingItem {
   quantity: number;
 
   @Prop({
-    type: [{ user: String, quantity: Number }],
+    type: [{ userId: String, quantity: Number }],
     default: [],
   })
-  selectedBy: { user: string; quantity: number }[];
+  selectedBy: { userId: string; quantity: number }[];
 }
 
 export const ShoppingItemSchema = SchemaFactory.createForClass(ShoppingItem);
