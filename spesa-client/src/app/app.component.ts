@@ -25,6 +25,7 @@ export class AppComponent {
   }
 
   get currentUser(): string | null {
-    return this.userService.getCurrent();
+    const user = this.userService.getCurrent();
+    return user ? user.name : null; // Replace 'username' with the actual string property you want
   }
 }

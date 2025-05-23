@@ -28,11 +28,11 @@ export class HomeComponent {
     const user = this.userService.getCurrent();
     if (!user || !item.selection || item.selection < 1) return;
 
-    const existing = item.selectedBy.find(s => s.user === user._id);
+    const existing = item.selectedBy.find(s => s.user._id === user._id);
     if (existing) {
       existing.quantity = item.selection;
     } else {
-      item.selectedBy.push(new SelectedItem(user._id, item.selection));
+      item.selectedBy.push(new SelectedItem(user, item.selection));
     }
 
     item.selection = 0;

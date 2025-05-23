@@ -9,7 +9,7 @@
     </div>
     <div class="text-xs text-gray-600 mt-1" *ngIf="item.selectedBy.length">
       Scelto da:
-      <span *ngFor="let s of item.selectedBy">{{ s.user }} ({{ s.quantity }}) </span>
+      <span *ngFor="let s of item.selectedBy">{{ s.user.name }} ({{ s.quantity }}) </span>
     </div>
   </div>
 </div>

@@ -17,10 +17,10 @@ export class SummaryComponent {
 
     for (const item of this.items) {
       for (const sel of item.selectedBy) {
-        if (!summaryMap[sel.user]) {
-          summaryMap[sel.user] = {};
+        if (!summaryMap[sel.user.name]) {
+          summaryMap[sel.user.name] = {};
         }
-        summaryMap[sel.user][item.name] = (summaryMap[sel.user][item.name] || 0) + sel.quantity;
+        summaryMap[sel.user.name][item.name] = (summaryMap[sel.user.name][item.name] || 0) + sel.quantity;
       }
     }
 

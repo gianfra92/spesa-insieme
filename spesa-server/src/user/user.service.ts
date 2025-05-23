@@ -15,6 +15,11 @@ export class UserService {
   }
 
   async addUser(name: string) {
+    const existing = await this.userModel.findOne({ name }).exec();
+    if (existing) {
+      // throw new Error('User with this name already exists');
+      return existing;
+    }
     const user = new this.userModel({ name });
     return user.save();
   }
