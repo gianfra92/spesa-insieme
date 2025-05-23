@@ -1,0 +1,21 @@
+<div class="mt-4">
+  <h3 class="font-bold text-lg mb-2">Riepilogo per utente</h3>
+  <ul class="text-sm text-gray-700 space-y-2">
+      <li *ngFor="let entry of getSummary()">
+      <span class="font-medium">{{ entry.user }}</span> ha preso:
+      <ul class="list-disc ml-5 text-gray-600">
+          <li *ngFor="let item of entry.items">
+          {{ item.name }} x{{ item.quantity }}
+          </li>
+      </ul>
+      <div class="text-gray-800 mt-1">Totale oggetti: {{ entry.total }}</div>
+      </li>
+  </ul>
+
+  <h3 class="font-bold text-lg mt-4 mb-2">Totale per oggetto</h3>
+  <ul class="list-disc list-inside">
+    <li *ngFor="let t of getTotalByItem() | keyvalue">
+      {{ t.key }}: {{ t.value }}
+    </li>
+  </ul>
+</div>

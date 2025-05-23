@@ -1,0 +1,15 @@
+<div class="space-y-2">
+  <div *ngFor="let item of items" class="p-2 bg-white shadow rounded">
+    <div class="flex justify-between items-center">
+      <div>
+        <strong>{{ item.name }}</strong> ({{ item.quantity }})
+      </div>
+      <input type="number" [(ngModel)]="item.selection" min="1" class="w-16 border p-1" />
+      <button (click)="onSelect(item)" class="bg-green-600 text-white px-3 py-1 rounded">Prendi</button>
+    </div>
+    <div class="text-xs text-gray-600 mt-1" *ngIf="item.selectedBy.length">
+      Scelto da:
+      <span *ngFor="let s of item.selectedBy">{{ s.user }} ({{ s.quantity }}) </span>
+    </div>
+  </div>
+</div>

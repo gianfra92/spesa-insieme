@@ -1,2 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+.input {
+  @apply border border-gray-300 rounded px-2 py-1 text-sm;
+}
+.btn {
+  @apply bg-blue-500 text-white rounded px-3 py-1 text-sm hover:bg-blue-600;
+}

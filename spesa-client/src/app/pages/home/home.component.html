@@ -1,0 +1,11 @@
+<div class="space-y-6 max-w-4xl mx-auto">
+  <div class="text-sm text-gray-600">
+    Utente attivo:
+    <strong *ngIf="userService.current$ | async as user; else noUser">{{ user }}</strong>
+    <ng-template #noUser><em>nessuno</em></ng-template>
+  </div>
+
+  <app-item-form (add)="addItem($event)"></app-item-form>
+  <app-item-list (select)="selectItem($event)" [items]="(shoppingService.allItems$ | async) ?? []"></app-item-list>
+  <app-summary [items]="(shoppingService.allItems$ | async) ?? []"></app-summary>
+</div>

@@ -1,0 +1,43 @@
+import { Component, Input } from '@angular/core';
+import { Item, SelectedItem } from '../../models';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-summary',
+  imports: [CommonModule],
+  templateUrl: './summary.component.html',
+  styleUrl: './summary.component.css'
+})
+export class SummaryComponent {
+
+  @Input() items: Item[] = [];
+
+  getSummary(): { user: string; items: { name: string; quantity: number }[]; total: number }[] {
+    const summaryMap: Record<string, { [itemName: string]: number }> = {};
+
+    for (const item of this.items) {
+      for (const sel of item.selectedBy) {
+        if (!summaryMap[sel.user]) {
+          summaryMap[sel.user] = {};
+        }
+        summaryMap[sel.user][item.name] = (summaryMap[sel.user][item.name] || 0) + sel.quantity;
+      }
+    }
+
+    return Object.entries(summaryMap).map(([user, itemsMap]) => ({
+      user,
+      items: Object.entries(itemsMap).map(([name, quantity]) => ({ name, quantity })),
+      total: Object.values(itemsMap).reduce((sum, q) => sum + q, 0),
+    }));
+  }
+
+  getTotalByItem(): { [itemName: string]: number } {
+    const total: { [itemName: string]: number } = {};
+    this.items.forEach(item => {
+      const sum = item.selectedBy.reduce((acc, s) => acc + s.quantity, 0);
+      total[item.name] = sum;
+    });
+    return total;
+  }
+
+}

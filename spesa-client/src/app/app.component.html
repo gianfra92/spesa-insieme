@@ -1,81 +1,28 @@
+<div class="min-h-screen flex bg-gray-100">
+  <!-- Sidebar -->
+  <div
+    [class.hidden]="!menuOpen"
+    class="fixed z-30 inset-y-0 left-0 w-64 bg-white shadow-md p-4 lg:block"
+  >
+    <h2 class="text-xl font-bold mb-4">Menu</h2>
+    <ul>
+      <li><a routerLink="/" (click)="closeMenu()" class="block py-2">Home</a></li>
+      <li><a routerLink="/utente" (click)="closeMenu()" class="block py-2">Utente</a></li>
+    </ul>
+  </div>
 
+  <!-- Content -->
+  <div class="flex-1 flex flex-col">
+    <header class="bg-white shadow p-4 flex justify-between items-center">
+      <button (click)="toggleMenu()" class="lg:hidden text-2xl">☰</button>
+      <h1 class="text-xl font-semibold">Spesa Condivisa</h1>
+      <span *ngIf="currentUser" class="text-sm text-gray-600">
+        Utente attivo: <strong>{{ currentUser }}</strong>
+      </span>
+    </header>
 
-<!-- app.component.html -->
-<div class="min-h-screen bg-gray-100 p-4">
-  <div class="max-w-5xl mx-auto">
-    <div class="grid md:grid-cols-3 gap-6">
-      <!-- Colonna 1: menù utenti -->
-      <app-user-menu class="md:col-span-1"></app-user-menu>
-
-      <!-- Colonna 2-3: contenuto principale -->
-      <div class="space-y-6 md:col-span-2">
-        <!-- Titolo -->
-        <h1 class="text-3xl font-bold text-center text-gray-800">Lista della Spesa Condivisa</h1>
-
-        <!-- (qui rimane tutto il layout che avevi già: item-form, item-list, riepiloghi) -->
-        <form (submit)="addItem()" class="flex space-x-2">
-          <input type="text" [(ngModel)]="newItemName" name="item" placeholder="Nuovo oggetto" class="input flex-1" required />
-          <input type="number" [(ngModel)]="newItemQuantity" name="quantity" class="input w-24" min="1" placeholder="Qtà" required />
-          <button type="submit" class="btn">Aggiungi</button>
-        </form>
-
-        <!-- Lista oggetti -->
-        <div class="space-y-4">
-          <div *ngFor="let item of shoppingItems" class="bg-white rounded-xl shadow p-4">
-            <div class="flex justify-between items-center mb-2">
-              <div>
-                <h2 class="text-lg font-semibold">{{ item.name }}</h2>
-                <p class="text-sm text-gray-500">Totale: {{ item.quantity }}</p>
-              </div>
-              <div>
-                <input type="number" min="0" [(ngModel)]="item.selection" class="input w-20" />
-                <button class="btn ml-2" (click)="selectItem(item)">Prendi</button>
-              </div>
-            </div>
-            <div class="text-sm text-gray-600">
-              <span *ngFor="let s of item.selectedBy">{{ s.user }}: {{ s.quantity }}&nbsp;</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Riepilogo -->
-        <div class="bg-white rounded-xl shadow p-4">
-        <h3 class="text-lg font-semibold mb-2">Riepilogo</h3>
-        <ul class="text-sm text-gray-700 space-y-2">
-            <li *ngFor="let entry of getSummary()">
-            <span class="font-medium">{{ entry.user }}</span> ha preso:
-            <ul class="list-disc ml-5 text-gray-600">
-                <li *ngFor="let item of entry.items">
-                {{ item.name }} x{{ item.quantity }}
-                </li>
-            </ul>
-            <div class="text-gray-800 mt-1">Totale oggetti: {{ entry.total }}</div>
-            </li>
-        </ul>
-        </div>
-
-        <!-- Riepilogo generale per oggetto -->
-        <div class="bg-white rounded-xl shadow p-4">
-        <h3 class="text-lg font-semibold mb-2">Totale per oggetto</h3>
-        <ul class="text-sm text-gray-700 list-disc pl-5">
-            <li *ngFor="let item of getTotalByItem()">
-            {{ item.name }}: {{ item.total }} in totale
-            </li>
-        </ul>
-        </div>
-      </div>
-    </div>
+    <main class="p-4">
+      <router-outlet></router-outlet>
+    </main>
   </div>
 </div>
-
-
-<!-- <div class="min-h-screen bg-gray-100 p-4">
-  <div class="max-w-3xl mx-auto space-y-6">
-
-    <div class="flex items-center space-x-2">
-      <label for="username" class="text-sm font-medium">Il tuo nome:</label>
-      <input id="username" type="text" [(ngModel)]="username" class="input" placeholder="Es. Mario" />
-    </div>
-    
-  </div>
-</div> -->
