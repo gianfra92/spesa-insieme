@@ -1,0 +1,32 @@
+<div class="bg-white rounded-xl shadow p-4 space-y-4">
+  <h2 class="text-lg font-semibold text-gray-800">Utenti</h2>
+
+  <!-- Seleziona utente esistente -->
+  <div *ngIf="(userService.allUsers$ | async)?.length; else noUsers">
+    <p class="text-sm mb-2">Seleziona il tuo nome:</p>
+
+    <div class="flex flex-wrap gap-2">
+      <button
+        *ngFor="let name of userService.allUsers$ | async"
+        (click)="select(name)"
+        class="px-3 py-1 rounded-full text-sm border border-gray-300"
+        [class.bg-blue-500]="(userService.current$ | async) === name"
+        [class.text-white]="(userService.current$ | async) === name"
+      >
+        {{ name }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Aggiungi nuovo utente -->
+  <ng-template #noUsers></ng-template>
+  <div class="flex gap-2">
+    <input
+      type="text"
+      class="input flex-1"
+      placeholder="Nuovo nome"
+      [(ngModel)]="newUser"
+    />
+    <button class="btn" (click)="add()">Aggiungi</button>
+  </div>
+</div>

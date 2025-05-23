@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserMenuComponent } from './components/user-menu/user-menu.component';
+import { UserService } from './services/user-service.service';
 
 type User = {
   user: string;
@@ -16,16 +18,17 @@ type ShoppingItem = {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UserMenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  username: string = '';
-  newItemName: string = '';
-  newItemQuantity: number = 1;
+  newItemName = '';
+  newItemQuantity = 1;
 
   shoppingItems: ShoppingItem[] = [];
+
+  constructor(public userService: UserService) {}
 
   addItem() {
     if (!this.newItemName.trim()) return;
@@ -41,13 +44,15 @@ export class AppComponent {
   }
 
   selectItem(item: any) {
-    if (!this.username || !item.selection || item.selection < 1) return;
+    const username = this.userService.getCurrent(); // lettura diretta del BehaviorSubject
 
-    const existing = item.selectedBy.find((s: User ) => s.user === this.username);
+    if (!username || !item.selection || item.selection < 1) return;
+
+    const existing = item.selectedBy.find((s: User) => s.user === username);
     if (existing) {
       existing.quantity = item.selection;
     } else {
-      item.selectedBy.push({ user: this.username, quantity: item.selection });
+      item.selectedBy.push({ user: username, quantity: item.selection });
     }
 
     item.selection = 0;
