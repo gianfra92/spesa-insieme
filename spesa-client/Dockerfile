@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . ./
 RUN sed -i "s|API_BASE_URL_PLACEHOLDER|$API_BASE_URL|g" src/environments/environment.prod.ts
-RUN echo "testing values$_TEST_VAR + $API_BASE_URL"
+RUN cat src/environments/environment.prod.ts
 RUN npm run build:prod
 
 
