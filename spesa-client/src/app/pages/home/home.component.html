@@ -11,4 +11,5 @@
   </ng-container>
   <ng-template #noList><h3 class="font-bold text-lg mb-2">Seleziona un utente per iniziare</h3></ng-template>
   <app-summary [items]="(shoppingService.allItems$ | async) ?? []"></app-summary>
+  <app-toast-message></app-toast-message>
 </div>
