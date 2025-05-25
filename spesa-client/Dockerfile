@@ -8,9 +8,6 @@ COPY . ./
 ARG _API_BASE_URL="default_trigger_arg"
 RUN echo "_API_BASE_URL is $_API_BASE_URL"
 
-ARG API_BASE_URL="default_deploy_arg"
-RUN echo "API_BASE_URL is $API_BASE_URL"
-
 # Adding env variables to prod env in angular
 RUN sed -i "s|API_BASE_URL_PLACEHOLDER|$_API_BASE_URL|g" src/environments/environment.prod.ts
 RUN cat src/environments/environment.prod.ts
