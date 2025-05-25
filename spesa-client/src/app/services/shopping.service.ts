@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Item } from '../models';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment'; // Import environment
+import { UserService } from './user-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+  ) {}
 
   private apiUrl = environment.apiBaseUrl;
   
@@ -17,8 +21,28 @@ export class ShoppingService {
   allItems$ = this.shoppingItems$.asObservable();
 
   fetchItems() {
-    this.http.get<Item[]>(`${this.apiUrl}/items`).subscribe(items => {
+    this.http.get<Item[]>(`${this.apiUrl}/items`)
+    .pipe(
+      switchMap(items =>
+      this.userService.current$.pipe(
+        take(1),
+        map(user => {
+          if (!user){
+            items.forEach(item => (item.selection = 0))
+          } else {
+            items.forEach(item => {
+              const match = item.selectedBy.find(s => s.user._id === user?._id);
+              item.selection = match ? match.quantity : 0;
+            });
+          }          
+          return items;
+        })
+      )
+    )
+    )
+    .subscribe(items => {
       this.shoppingItems$.next(items);
+      this.userService.current$
     });
   }
 
