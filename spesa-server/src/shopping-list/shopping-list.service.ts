@@ -29,13 +29,11 @@ export class ShoppingListService {
   async updateSelection(itemId: string, userId: string, quantity: number) {
     const item = await this.shoppingItemModel
       .findById(itemId)
-      .populate('selectedBy.user')
+      .populate('selectedBy.user', 'name')
       .exec();
     if (!item) throw new NotFoundException('Item not found');
 
     const userObjectId = new Types.ObjectId(userId);
-
-    console.log('Item', item);
 
     const existing = item.selectedBy.find((s) => s.user.equals(userObjectId));
 
